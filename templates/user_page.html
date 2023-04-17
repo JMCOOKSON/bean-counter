@@ -1,0 +1,43 @@
+<{% extends 'my_base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block title %}
+Bean Counter
+{% endblock %}
+
+{% block content %}
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+
+      <h1 class="pt-5 pb-2">Are you ready to count the fruits of your labor?</h1>
+
+      {{ wtf.quick_form(form) }}
+
+      <p class="pt-5"><strong>{{ message }}</strong></p>
+
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+
+      <h1 class="pt-5 pb-2">Bean counting history</h1>
+      <div>
+        <h3>So far to date, you have saved ${{total}}. </h3>
+      </div>
+        <ul>
+          {% for item in history %}
+          <li> {{ item.date }} , {{item.produce}} , {{item.weight}} , {{item.price}} </li>
+          {% endfor %}
+        </ul>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

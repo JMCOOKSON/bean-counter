@@ -1,0 +1,28 @@
+{% extends 'my_base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+
+{% block title %}
+Bean Counter
+{% endblock %}
+
+{% block content %}
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+
+      <h1 class="pt-5 pb-2">Let us know what you changes you would like to see</h1>
+
+      {{ wtf.quick_form(form) }}
+
+      <p class="pt-5"><strong>{{ message }}</strong></p>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
