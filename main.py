@@ -287,13 +287,13 @@ def userinfo():
             items = CountdownPrice.query.filter(CountdownPrice.produce_formatted.like(f'%{produce_harvested}%')).all()
             if not items:
                 error_message = "Sorry, that item is not in our database. Please contact us to add it."
-                return render_template("user_page.html", form=form, error=error_message)
+                return render_template("user_page.html", form=form, user_id=user_id, error=error_message)
             for item in items:
                 print(item.produce_formatted)
             return render_template('selection_page.html', produce_list=items)
 
     else:
-        return render_template("user_page.html", form=form, history=data, total=str(round(saved_result.total_saved, 2)))
+        return render_template("user_page.html", form=form, history=data, user_id=user_id, total=str(round(saved_result.total_saved, 2)))
 
 
 
@@ -302,7 +302,7 @@ def data_intake(item_id):
     item = CountdownPrice.query.get(item_id)
     if item == None:
         message = "Hmmm we can't find this item in our database. Please check your spelling and try again, or, if you would like us to add this item, we would love to hear from you."
-        render_template('user_page', note=message)
+        render_template('userinfo', note=message)
     form = EnterWeight()
 
     user_id = session.get('user_id')
@@ -342,8 +342,9 @@ def data_intake(item_id):
     return render_template('dataintake.html', form=form, item=item)
 
 
-@app.route('/delete_history/<user_id>', methods=['POST'])
+@app.route('/delete_history/<int:user_id>', methods=['POST'])
 def delete_history(user_id):
+    print(user_id)
     histories = History.query.filter_by(user_id=user_id).all()
     if histories:
         for history in histories:
@@ -352,7 +353,7 @@ def delete_history(user_id):
         flash('History deleted successfully.', 'success')
     else:
         flash('No history found for the user.', 'error')
-    return redirect(url_for('userpage'))
+    return redirect(url_for('userinfo'))
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
