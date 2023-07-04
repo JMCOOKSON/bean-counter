@@ -1,5 +1,13 @@
 {% extends 'bootstrap/base.html' %}
-
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="flash-messages">
+      {% for message in messages %}
+        <div class="flash-message">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
 
 
 {% block styles %}
@@ -9,6 +17,18 @@
 		body {background-size: cover}
 		body {background-repeat: no-repeat}
 		body {min-height: 100vh}
+
+
+      body, p, h1, h2, h3, h4, h5, h6 {
+      color: #333333;
+      }
+      .produce-list li {
+      font-size: 20px;
+    }
+    .produce-list li a {
+      color: #333333;
+      }
+
 	</style>
 {% endblock %}
 
@@ -36,6 +56,9 @@ Bean Counter
       </li>
         <li class="nav-item">
         <a class="nav-link" href="{{ url_for('contact') }}">Contact</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
       </li>
     </ul>
   </div>

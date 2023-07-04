@@ -86,51 +86,51 @@ def scrap_veges():
             'single_unit_price': single_unit_price.text,
             'kg_price': per_kg_price_element
         })
+# with app.app_context():
+#     produce = "Apples"
+#     item = db.session.execute(db.select(CountdownPrice).filter_by(produce_formatted=produce)).scalar_one()
+#     print(item.per_kg_price)
+price_info_further = scrap_fruit()
+price_info = scrap_veges()
+
+
 with app.app_context():
-    produce = "Apples"
-    item = db.session.execute(db.select(CountdownPrice).filter_by(produce_formatted=produce)).scalar_one()
-    print(item.per_kg_price)
-# price_info_further = scrap_fruit()
-# price_info = scrap_veges()
-#
-#
-# with app.app_context():
-#     for product in prices:
-#         item = CountdownPrice.query.filter_by(produce= product['name']).first()
-#         if item:
-#             current_price = item.per_kg_price
-#             updated_price = product['kg_price']
-#             if updated_price != current_price:
-#                 item.per_kg_price = updated_price
-#
-#         else:
-#             new_product = CountdownPrice(produce=product['name'], single_price=product['single_unit_price'],
-#                                      per_kg_price=product['kg_price'])
-#             db.session.add(new_product)
-#
-#
-#         db.session.commit()
-#
-# with app.app_context():
-#     items = CountdownPrice.query.all()
-#     for item in items:
-#         if item.produce.startswith("Value "):
-#             item.produce_formatted = item.produce.replace("Value Fresh Vegetable ", "")
-#         if item.produce.startswith("The Odd "):
-#             item.produce_formatted = item.produce.replace("The Odd Bunch Fresh Fruit ", "")
-#         if item.produce.startswith("Countdown "):
-#             item.produce_formatted = item.produce.replace("Countdown Fresh Tomatoes ", "")
-#         if item.produce.startswith("Countdown "):
-#             item.produce_formatted = item.produce.replace("Countdown Fresh Vegetable ", "")
-#         if item.produce.startswith("Meadow "):
-#             item.produce_formatted = item.produce.replace("Meadow Fresh Vegetable ", "")
-#         elif item.produce.startswith("Fresh Fruit "):
-#             item.produce_formatted = item.produce.replace("Fresh Fruit ", "")
-#         elif item.produce.startswith("Fresh Vegetable "):
-#             item.produce_formatted = item.produce.replace("Fresh Vegetable ", "")
-#         item.per_kg_price = (float(item.per_kg_price) * 0.01)
-#
-#     db.session.commit()
+    for product in prices:
+        item = CountdownPrice.query.filter_by(produce= product['name']).first()
+        if item:
+            current_price = item.per_kg_price
+            updated_price = product['kg_price']
+            if updated_price != current_price:
+                item.per_kg_price = updated_price
+
+        else:
+            new_product = CountdownPrice(produce=product['name'], single_price=product['single_unit_price'],
+                                     per_kg_price=product['kg_price'])
+            db.session.add(new_product)
+
+
+        db.session.commit()
+
+with app.app_context():
+    items = CountdownPrice.query.all()
+    for item in items:
+        if item.produce.startswith("Value "):
+            item.produce_formatted = item.produce.replace("Value Fresh Vegetable ", "")
+        if item.produce.startswith("The Odd "):
+            item.produce_formatted = item.produce.replace("The Odd Bunch Fresh Fruit ", "")
+        if item.produce.startswith("Countdown "):
+            item.produce_formatted = item.produce.replace("Countdown Fresh Tomatoes ", "")
+        if item.produce.startswith("Countdown "):
+            item.produce_formatted = item.produce.replace("Countdown Fresh Vegetable ", "")
+        if item.produce.startswith("Meadow "):
+            item.produce_formatted = item.produce.replace("Meadow Fresh Vegetable ", "")
+        elif item.produce.startswith("Fresh Fruit "):
+            item.produce_formatted = item.produce.replace("Fresh Fruit ", "")
+        elif item.produce.startswith("Fresh Vegetable "):
+            item.produce_formatted = item.produce.replace("Fresh Vegetable ", "")
+        item.per_kg_price = (float(item.per_kg_price) * 0.01)
+
+    db.session.commit()
 # get_product_current_price()
 """To run once per week to update prices in db"""
 # def get_product_current_price(harvested_item, XPATH):

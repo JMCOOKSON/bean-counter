@@ -3,26 +3,20 @@
 
 
 {% block title %}
-Register to get started
+Bean Counter
 {% endblock %}
 
 {% block content %}
-{% if error %}
-  <div class="error-message">{{ error }}</div>
-{% endif %}
+
 <div class="container">
   <div class="row">
     <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
 
-      <h1 class="pt-5 pb-2">Please enter your details below: </h1>
+      <h1 class="pt-5 pb-2">One more step:</h1>
+      <h2 class="pt-5 pb-2"> {{ item.produce_formatted }} </h2>
 
-        {{ wtf.quick_form(form) }}
-
-
-      <p class="pt-5"><strong> </strong></p>
-
+    {{ wtf.quick_form(form) }}
     </div>
   </div>
 </div>
-
 {% endblock %}

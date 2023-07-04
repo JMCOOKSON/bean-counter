@@ -1,0 +1,33 @@
+{% extends 'my_base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block title %}
+Bean Counter
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+
+      <h1 class="pt-5 pb-2">Select from the following:</h1>
+    </div>
+    </div>
+    <div class="row">
+      <ul class="produce-list">
+
+          {% for item in produce_list %}
+          <li><a href="{{ url_for('data_intake', item_id=item.id) }}">{{ item.produce_formatted }}</a></li>
+          {% endfor %}
+
+      </ul>
+
+  </div>
+
+
+</div>
+
+
+
+{% endblock %}

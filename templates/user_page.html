@@ -1,13 +1,35 @@
-<{% extends 'my_base.html' %}
+{% extends 'my_base.html' %}
 {% import "bootstrap/wtf.html" as wtf %}
-
-
+{% block head %}
+    {{ super() }}
+    <style>
+        .list-item {
+        font-size: 16px;
+        margin-bottom: 10px;
+        padding: 5px;
+        background-color: #f5f5f5;
+        border-radius: 4px;
+    }
+    </style>
+{% endblock %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="flash-messages">
+      {% for message in messages %}
+        <div class="flash-message">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
 {% block title %}
 Bean Counter
 {% endblock %}
 
 {% block content %}
 
+{% if error %}
+  <div class="error-message alert alert alert-danger" role="alert">{{ error }}</div>
+{% endif %}
 
 
 <div class="container">
@@ -15,7 +37,7 @@ Bean Counter
     <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
 
       <h1 class="pt-5 pb-2">Are you ready to count the fruits of your labor?</h1>
-
+      {{ note }}
       {{ wtf.quick_form(form) }}
 
       <p class="pt-5"><strong>{{ message }}</strong></p>
@@ -26,16 +48,23 @@ Bean Counter
 <div class="container">
   <div class="row">
     <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
-
-      <h1 class="pt-5 pb-2">Bean counting history</h1>
+    {% if total != '0' %}
+      <h1 class="pt-5 pb-2">Bean counting history...</h1>
       <div>
+
         <h3>So far to date, you have saved ${{total}}. </h3>
+        {% endif %}
       </div>
         <ul>
-          {% for item in history %}
-          <li> {{ item.date }} , {{item.produce}} , {{item.weight}} , {{item.price}} </li>
+          {% if history %}
+            {% for item in history %}
+            <li class="list-item"> {{ item.date.strftime("%d-%m-%Y") }},    {{item.produce}} -    Weight: {{item.weight}}kg -   Saved: ${{item.price}} </li>
           {% endfor %}
+          {% endif %}
         </ul>
+      <form action="{{ url_for('delete_history', user_id=user_id) }}" method="POST">
+    <button type="submit" class="btn btn-danger">Delete</button>
+</form>
 
     </div>
   </div>
