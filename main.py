@@ -334,7 +334,7 @@ def data_intake(item_id):
                 error_message = "Sorry, that item is not in our database. Please contact us to add it."
                 return redirect(url_for('userpage', error=error_message))
 
-            amount_saved = float(result.per_kg_price) * float(weight_value)
+            amount_saved = float((result.per_kg_price)*100) * float(weight_value)
             saved_result = db.session.execute(db.select(User).filter_by(id=user_id)).scalar_one()
             new_amount = saved_result.total_saved + amount_saved
             saved_result.total_saved = new_amount
