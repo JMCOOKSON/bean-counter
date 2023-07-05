@@ -219,6 +219,11 @@ def register():
             new_user = User(email=email, password=generate_password_hash(password), name=name, total_saved=saved)
             db.session.add(new_user)
             db.session.commit()
+            print('user added')
+            # Perform authentication after successful registration
+            session['logged_in'] = True
+            session['user_id'] = new_user.id
+
             return redirect('/userpage')
     else:
         return render_template('register.html', form=form)
@@ -290,6 +295,7 @@ def userinfo():
                 return render_template("user_page.html", form=form, user_id=user_id, error=error_message)
             for item in items:
                 print(item.produce_formatted)
+
             return render_template('selection_page.html', produce_list=items)
 
     else:
@@ -342,9 +348,9 @@ def data_intake(item_id):
     return render_template('dataintake.html', form=form, item=item)
 
 
-@app.route('/delete_history/<int:user_id>', methods=['POST'])
-def delete_history(user_id):
-    print(user_id)
+@app.route('/delete_history', methods=['POST'])
+def delete_history():
+    user_id= session.get('user_id')
     histories = History.query.filter_by(user_id=user_id).all()
     if histories:
         for history in histories:

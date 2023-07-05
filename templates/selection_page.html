@@ -18,7 +18,7 @@ Bean Counter
       <ul class="produce-list">
 
           {% for item in produce_list %}
-          <li><a href="{{ url_for('data_intake', item_id=item.id) }}">{{ item.produce_formatted }}</a></li>
+          <li class="list-item"><a href="{{ url_for('data_intake', item_id=item.id) }}">{{ item.produce_formatted }}</a></li>
           {% endfor %}
 
       </ul>
