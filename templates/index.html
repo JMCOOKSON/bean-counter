@@ -35,13 +35,29 @@ Bean Counter
 
 
 <!--    </div>-->
+ <div class="container">
+  <div class="row my-5">
+    <div class="col-md-6 text-center">
       <div class="col-md-12 col-lg-12 my-0">
-          <h1 class="pt-5 pb-2 text-center " style="color: #333333; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">How much will your harvest <br> save each week?</h1>
-          <div class="text-center mt-5"><a href="{{ url_for('register') }}" class="btn btn-primary text-center">Get Started</a>
-        <a href="{{ url_for('login') }}" class="btn btn-primary text-center">Login</a>
-          </div>
-          </div>
+        <h2 class="pt-5 pb-2" style="color: #333333; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">How much will your harvest<br>save each week?</h2>
+        <h3 class="pt-5 pb-2">Register to view your savings over time.</h3>
+        <div class="text-center mt-5">
+          <a href="{{ url_for('register') }}" class="btn btn-primary">Register</a>
+          <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 text-center">
+      <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+        <h2 class="pt-5 pb-2" style="color: #333333; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Are you ready to count the fruits of your labor?</h2>
+        {{ note }}
+        {{ wtf.quick_form(form) }}
+        <p class="pt-5"><strong>{{ message }}</strong></p>
+      </div>
+    </div>
   </div>
 </div>
+
+
 
 {% endblock %}

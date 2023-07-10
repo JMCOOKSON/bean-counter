@@ -14,7 +14,7 @@
 {{ super() }}
 	<style>
 		body {
-        background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url('/static/pig-in-basket.jpg');
+        background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('/static/pig-in-basket.jpg');
         background-size: cover;
         background-repeat: no-repeat;
         min-height: 100vh;
@@ -30,6 +30,10 @@
     .produce-list li a {
       color: #333333;
       }
+
+      footer p {
+    margin-bottom: 0;
+  }
 
 	</style>
 {% endblock %}
@@ -66,5 +70,13 @@ Bean Counter
   </div>
 </nav>
 
+<footer class="fixed-bottom">
+  <div class="container">
+    <p>© 2023 NZBeanCounter. All rights reserved. | <a href="{{ url_for('privacy') }}">Privacy Policy</a></p>
+  </div>
+</footer>
+
 
 {% endblock %}
+
+

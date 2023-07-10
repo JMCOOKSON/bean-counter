@@ -7,7 +7,7 @@ load_dotenv()
 from flask import Flask, render_template, redirect, url_for, request, session, jsonify, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField
+from wtforms import StringField, SubmitField, PasswordField, RadioField
 from wtforms.validators import DataRequired, Length, Email
 from flask_bootstrap import Bootstrap
 import requests
@@ -74,7 +74,8 @@ class EnterProduce(FlaskForm):
 
 class EnterWeight(FlaskForm):
 
-    produce_weight = StringField("Please enter weight(kg) of item(s)")
+    produce_weight = StringField("Please enter weight(kg) or number of single item(s)")
+    pricing_option = RadioField("Pricing Option", choices=[('per_kg', 'Per kg'), ('single_item', 'Single item')])
     submit = SubmitField('Submit')
 
 
@@ -172,7 +173,21 @@ def page_not_found(e):
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    return render_template("index.html")
+    user_id = 0;
+    form = EnterProduce()
+    if form.validate_on_submit():
+        if form.search.data:
+            print("if statement through ")
+            produce_harvested = form.produce_name.data
+            items = CountdownPrice.query.filter(CountdownPrice.produce_formatted.like(f'%{produce_harvested}%')).all()
+            if not items:
+                error_message = "Sorry, that item is not in our database. Please contact us to add it."
+                return render_template("user_page.html", form=form, user_id=user_id, error=error_message)
+            for item in items:
+                print(item.produce_formatted)
+
+            return render_template('selection_page.html', produce_list=items)
+    return render_template("index.html", form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -312,8 +327,8 @@ def data_intake(item_id):
     form = EnterWeight()
 
     user_id = session.get('user_id')
-    if not session.get('logged_in'):
-        return redirect('/login')
+
+
 
 
     if form.submit.data:
@@ -333,8 +348,25 @@ def data_intake(item_id):
             if not result:
                 error_message = "Sorry, that item is not in our database. Please contact us to add it."
                 return redirect(url_for('userpage', error=error_message))
+            if form.pricing_option.data == 'per_kg':
+                # Calculate price per kg
+                amount_saved = float(result.per_kg_price) * float(weight_value)
+            else:
+                if result.single_price is None:
+                    error_message = "Sorry, individual item price is not available for this item."
+                    return render_template('dataintake.html', form=form, item=item, error=error_message)
 
-            amount_saved = float(result.per_kg_price) * float(weight_value)
+                price_string = result.single_price
+
+                price_digits = price_string.lstrip('$')
+
+                price_digits = price_digits[:5]
+                price = float(price_digits)
+
+                amount_saved = float(price) * float(weight_value)
+
+            if not session.get('logged_in'):
+                return render_template("savings_page.html", savings=round(amount_saved, 2))
             saved_result = db.session.execute(db.select(User).filter_by(id=user_id)).scalar_one()
             new_amount = saved_result.total_saved + amount_saved
             saved_result.total_saved = new_amount
@@ -376,6 +408,10 @@ def contact():
         return render_template('contact.html', form=form, message="Thank you for your request! We will get back to you soon.")
 
     return render_template('contact.html', form=form)
+
+@app.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
 
 
 

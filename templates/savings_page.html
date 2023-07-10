@@ -16,7 +16,10 @@ Bean Counter
 
       <h1 class="pt-5 pb-2">You have saved...</h1>
 
-      <p class="lead">${{ savings }} on this product, and ${{total_saved }} overall, look at you go! </p>
+      <p class="lead">${{ savings }} on this product <br>
+        {% if total_saved %}
+        and ${{total_saved }} overall, look at you go! </p>
+      {% endif %}
       <a href="{{ url_for('userinfo') }}" class="btn btn-primary text-center">Back to profile page</a>
 
 
